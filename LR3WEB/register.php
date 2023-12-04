@@ -1,9 +1,12 @@
 <?php session_start();
+require_once 'core/index.php';
 if (isset($_SESSION['user'])) {
   echo "Вы уже авторизованы как " . $_SESSION['user']['login'] . " <br><a href='Logic/logout.php'>Выход</a>";
   return;
 }
+$Errors = UserAction::SignUp();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -112,9 +115,9 @@ if (isset($_SESSION['user'])) {
     <div class="row rows mb-3">
       <div class="col text-center">
 
-        <?php if (isset($_SESSION['message'])) {
-          echo '<p>' . $_SESSION['message'] . '</p>';
-          unset($_SESSION['message']);
+        <?php if (isset($Errors['message'])) {
+          echo '<p>' . $Errors['message'] . '</p>';
+          unset($Errors['message']);
         } ?>
 
       </div>
