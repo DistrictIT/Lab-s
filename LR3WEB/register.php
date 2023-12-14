@@ -1,9 +1,12 @@
 <?php session_start();
+require_once 'core/index.php';
 if (isset($_SESSION['user'])) {
   echo "Вы уже авторизованы как " . $_SESSION['user']['login'] . " <br><a href='Logic/logout.php'>Выход</a>";
   return;
 }
+$Errors  = UserAction::SignUp();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -112,9 +115,9 @@ if (isset($_SESSION['user'])) {
     <div class="row rows mb-3">
       <div class="col text-center">
 
-        <?php if (isset($_SESSION['message'])) {
-          echo '<p>' . $_SESSION['message'] . '</p>';
-          unset($_SESSION['message']);
+        <?php if (isset($_POST ['message'])) {
+          echo htmlspecialchars( '<p>' . $_POST ['message'] . '</p>');
+          unset($_POST ['message']);
         } ?>
 
       </div>
@@ -122,14 +125,14 @@ if (isset($_SESSION['user'])) {
 
     <div class="row rows justify-content-center">
       <div class="col text-center">
-        <form action="Logic/register_logic.php" method="POST">
+        <form action="" method="POST">
           <div class="row rows mb-3">
             <label for="inputEmail" class="col-sm-2 col-form-label">ФИО</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" name="fio" placeholder="Введите свое ФИО" value="<?php
-              if (isset($_SESSION['register']['fio'])) {
-                echo $_SESSION['register']['fio'];
-                unset($_SESSION['register']['fio']);
+              if (isset($_POST ['register']['fio'])) {
+                echo htmlspecialchars( $_POST ['register']['fio']);
+                unset($_POST ['register']['fio']);
               } ?>">
             </div>
           </div>
@@ -137,9 +140,9 @@ if (isset($_SESSION['user'])) {
             <label for="birthday" class="col-sm-2 col-form-label">Дата рождения</label>
             <div class="col-sm-8">
               <input type="date" class="form-control" name="birthday" placeholder="Введите дату рождения" value="<?php
-              if (isset($_SESSION['register']['birthday'])) {
-                echo $_SESSION['register']['birthday'];
-                unset($_SESSION['register']['birthday']);
+              if (isset($_POST ['register']['birthday'])) {
+                echo htmlspecialchars( $_POST ['register']['birthday']);
+                unset($_POST ['register']['birthday']);
               } ?>">
             </div>
           </div>
@@ -151,7 +154,7 @@ if (isset($_SESSION['user'])) {
                 <div class="col-sm-8">
                   <div class="form-check text-lg-start">
                     <input class="form-check-input" type="radio" name="pol" id="gridRadios1" value="Муж" <?php
-                    if (isset($_SESSION['register']['pol']) && $_SESSION['register']['pol'] === "Муж") {
+                    if (isset($_POST ['register']['pol']) && $_POST ['register']['pol'] === "Муж") {
                       echo "checked";
                     } ?>>
                     <label class="form-check-label" for="gridRadios1">
@@ -160,10 +163,10 @@ if (isset($_SESSION['user'])) {
                   </div>
                   <div class="form-check text-lg-start">
                     <input class="form-check-input" type="radio" name="pol" id="gridRadios2" value="Жен" <?php
-                    if (isset($_SESSION['register']['pol']) && $_SESSION['register']['pol'] === "Жен") {
+                    if (isset($_POST ['register']['pol']) && $_POST ['register']['pol'] === "Жен") {
                       echo "checked";
                     }
-                    unset($_SESSION['register']['pol']); ?>>
+                    unset($_POST ['register']['pol']); ?>>
                     <label class="form-check-label" for="gridRadios2">
                       Жен
                     </label>
@@ -176,9 +179,9 @@ if (isset($_SESSION['user'])) {
             <label for="inputEmail" class="col-sm-2 col-form-label">Группа крови</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" name="blood_type" placeholder="Введите свою группу крови" value="<?php
-              if (isset($_SESSION['register']['blood_type'])) {
-                echo $_SESSION['register']['blood_type'];
-                unset($_SESSION['register']['blood_type']);
+              if (isset($_POST ['register']['blood_type'])) {
+                echo htmlspecialchars( $_POST ['register']['blood_type']);
+                unset($_POST ['register']['blood_type']);
               } ?>">
             </div>
           </div>
@@ -186,9 +189,9 @@ if (isset($_SESSION['user'])) {
             <label for="inputEmail" class="col-sm-2 col-form-label">Резус фактор</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" name="rezus_factor" placeholder="Введите свой резус фактор" value="<?php
-              if (isset($_SESSION['register']['rezus_factor'])) {
-                echo $_SESSION['register']['rezus_factor'];
-                unset($_SESSION['register']['rezus_factor']);
+              if (isset($_POST ['register']['rezus_factor'])) {
+                echo htmlspecialchars( $_POST ['register']['rezus_factor']);
+                unset($_POST ['register']['rezus_factor']);
               } ?>">
             </div>
           </div>
@@ -196,9 +199,9 @@ if (isset($_SESSION['user'])) {
             <label for="inputEmail" class="col-sm-2 col-form-label">Интересы</label>
             <div class="col-sm-8">
               <textarea type="text" class="form-control" name="interests" placeholder="Введите то, чем вы увлекаетесь"><?php
-              if (isset($_SESSION['register']['interests'])) {
-                echo $_SESSION['register']['interests'];
-                unset($_SESSION['register']['interests']);
+              if (isset($_POST ['register']['interests'])) {
+                echo htmlspecialchars( $_POST ['register']['interests']);
+                unset($_POST ['register']['interests']);
               } ?></textarea>
             </div>
           </div>
@@ -207,9 +210,9 @@ if (isset($_SESSION['user'])) {
             <label for="inputEmail" class="col-sm-2 col-form-label">Адрес</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" name="address" placeholder="Введите свой адрес проживания" value="<?php
-              if (isset($_SESSION['register']['address'])) {
-                echo $_SESSION['register']['address'];
-                unset($_SESSION['register']['address']);
+              if (isset($_POST ['register']['address'])) {
+                echo htmlspecialchars( $_POST ['register']['address']);
+                unset($_POST ['register']['address']);
               } ?>">
             </div>
           </div>
@@ -218,9 +221,9 @@ if (isset($_SESSION['user'])) {
             <div class="col-sm-8">
               <input type="text" class="form-control" name="profile_vk" placeholder="Введите ссылку на свой профиль ВК"
                 value="<?php
-                if (isset($_SESSION['register']['profile_vk'])) {
-                  echo $_SESSION['register']['profile_vk'];
-                  unset($_SESSION['register']['profile_vk']);
+                if (isset($_POST ['register']['profile_vk'])) {
+                  echo htmlspecialchars ($_POST ['register']['profile_vk']);
+                  unset($_POST ['register']['profile_vk']);
                 } ?>">
             </div>
           </div>
@@ -229,9 +232,9 @@ if (isset($_SESSION['user'])) {
             <label for="inputEmail" class="col-sm-2 col-form-label">Логин</label>
             <div class="col-sm-8">
               <input type="email" class="form-control" name="login" placeholder="Введите свой логин" value="<?php
-              if (isset($_SESSION['register']['login'])) {
-                echo $_SESSION['register']['login'];
-                unset($_SESSION['register']['login']);
+              if (isset($_POST ['register']['login'])) {
+                echo htmlspecialchars($_POST ['register']['login']);
+                unset($_POST ['register']['login']);
               } ?>">
             </div>
           </div>
